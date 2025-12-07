@@ -17,3 +17,8 @@ Grabbed the memory map from GRUB! Now need to start building the bitmap and my m
 3. Now, need to start thinking about other functionality like malloc and all of these stuff
 ### organizational work
 Need to start organizing my code more and my build tools
+## How to build
+- You must first have a cross-compiler set up to be able to build and run this. Without using a cross-compiler, a lot of unexpected things can happen because the compiler assumes that the code is running on the host operating system.
+- The compiler that I'm using targets a generic architecture (i686-elf)t hat allows you to leave the current operating system behind, meaning that no headers or libraries of the host operating system will be used.
+- Call `make`.
+- 
