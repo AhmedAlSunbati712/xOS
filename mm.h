@@ -9,4 +9,8 @@
 #define DOWN_TO_PAGE(ADDR) ((ADDR) & ~PAGEMASK)
 #define UP_TO_PAGE(ADDR) ((ADDR + PAGEMASK) & ~PAGEMASK)
 
+
+extern uint8_t bitmap[BITMAP_LENGTH];
+
+bool initialize_pmm_bitmap(multiboot_info_t* mbd, uint64_t memory_limit);
 #endif
