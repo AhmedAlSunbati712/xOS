@@ -1,6 +1,8 @@
 #ifndef MM_H
 #define MM_H
 
+#define MAX_NUM_PAGES 1048576
+#define BITMAP_LENGTH (MAX_NUM_PAGES/8)
 #define PAGESHIFT 12
 #define PAGESIZE (1 << PAGESHIFT)
 #define PAGEMASK (PAGESIZE - 1)
