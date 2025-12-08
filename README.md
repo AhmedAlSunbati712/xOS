@@ -12,7 +12,7 @@ Finally, got printf working with decimals, characters, long, and long long forma
 Grabbed the memory map from GRUB! Now need to start building the bitmap and my memory manager.
 ## Need to do
 ### Memory manager
-1. Build the bitmap
+1. [x] ~~Build the bitmap~~
 2. Mark the bootloader info section and the kernel stuff as used
 3. Now, need to start thinking about other functionality like malloc and all of these stuff
 ### organizational work
