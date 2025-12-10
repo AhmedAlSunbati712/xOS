@@ -40,17 +40,24 @@ bool initialize_pmm_bitmap(multiboot_info_t* mbd) {
 			}
 		}
 	}
+	uint32_t address_to_check = 1000;
+	int page_num = (int) (address_to_check >> PAGESHIFT);
+	printf("[DEBUG] Address to check %x.\n", address_to_check);
+	printf("[DEBUG] page num to check %x.\n", page_num);
+	printf("[DEBUG] First byte in bitmap1: %d\n", bitmap[0]);
 	printf("[!] Number of free pages: %d.\n", num_free);
 	return true;
 }
 
 bool mark_occupied(uint32_t start_address, uint32_t end_address) {
-	uint32_t start_aligned = UP_TO_PAGE(start_address);
-	uint32_t end_aligned = DOWN_TO_PAGE(end_address);
+	uint32_t start_aligned = DOWN_TO_PAGE(start_address);
+	uint32_t end_aligned = UP_TO_PAGE(end_address);
 	for (uint32_t curr_addr = start_aligned; curr_addr < end_aligned; curr_addr += PAGESIZE) {
 		int curr_page_num = (int) (curr_addr >> PAGESHIFT);
 		if (!is_free(curr_page_num)) {
 			printf("[!] page num %d is occupied\n", curr_page_num);
+			uint32_t corresponding_address = curr_page_num << PAGESHIFT;
+			printf("[!] this  corresponds to the following address %x.\n", corresponding_address);
 			// roll back
 			return false;
 		}
@@ -68,5 +75,9 @@ bool is_free(int page_num) {
 	uint8_t bitmask = 1 << byte_subidx;
 	uint8_t bitmasked_byte = bitmap[byte_idx] & bitmask;
 	bitmasked_byte = bitmasked_byte >> byte_subidx;
+	//printf("[DEBUG] bitmasked byte:%d\n", bitmasked_byte);
+	//printf("[DEBUG] First byte in bitmap2: %d\n", bitmap[0]);
+	// printf("bitmap byte: %d\n", bitmap[byte_idx]);
+	// printf("page_num: %d\n", page_num);
 	return bitmasked_byte == 0;
 }

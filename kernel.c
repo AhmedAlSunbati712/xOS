@@ -76,10 +76,30 @@ void kernel_main(multiboot_info_t* mbd, unsigned int magic)
 	printf("[+] Number of bytes in bitmap: %d.\n", BITMAP_LENGTH);
 	initialize_pmm_bitmap(mbd);
 	// Marking kernel section stuff as occupied
-	mark_occupied(kernel_text_start, kernel_text_end);
-	mark_occupied(kernel_rodata_start, kernel_rodata_end);
-	mark_occupied(kernel_data_start, kernel_data_end);
-	mark_occupied(kernel_bss_start, kernel_bss_end);
+	if (!mark_occupied((uint32_t)&kernel_text_start, (uint32_t)&kernel_text_end)) {
+		printf("[!] [ERROR]: Kernel text section trying to take up addresses %x - %x but it's already occupied by something else!\n", &kernel_text_start, &kernel_text_end);
+	} else {
+		printf("[+] [SUCCESS]: Kernel text section successfully occupied %x - %x.\n", &kernel_text_start, &kernel_text_end);
+	}
+
+	if (!mark_occupied((uint32_t)&kernel_rodata_start, (uint32_t)&kernel_rodata_end)) {
+		printf("[!] [ERROR]: Kernel read-only data section trying to take up addresses %x - %x but it's already occupied by something else!\n", &kernel_rodata_start, &kernel_rodata_end);
+	} else {
+		printf("[+] [SUCCESS]: Kernel read-only data section successfully occupied %x - %x.\n", &kernel_rodata_start, &kernel_rodata_end);
+	}
+
+	if (!mark_occupied((uint32_t)&kernel_data_start, (uint32_t)&kernel_data_end)) {
+		printf("[!] [ERROR]: Kernel data section trying to take up addresses %x - %x but it's already occupied by something else!\n", &kernel_data_start, &kernel_data_end);
+	} else {
+		printf("[+] [SUCCESS]: Kernel data section successfully occupied %x - %x.\n", &kernel_data_start, &kernel_data_end);
+	}
+
+	if (!mark_occupied((uint32_t)&kernel_bss_start, (uint32_t)&kernel_bss_end)) {
+		printf("[!] [ERROR]: Kernel bss section trying to take up addresses %x - %x but it's already occupied by something else!\n", &kernel_bss_start, &kernel_bss_start);
+	} else {
+		printf("[+] [SUCCESS]: Kernel bss section successfully occupied %x - %x.\n", &kernel_bss_start, &kernel_bss_end);
+
+	}
 
 	
 }

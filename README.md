@@ -10,10 +10,13 @@ Also, defined some helper functionality to move the cursor. This uses Port-mappe
 Finally, got printf working with decimals, characters, long, and long long formatting. This is huge. can debug a lot with this now.
 ### Memory map
 Grabbed the memory map from GRUB! Now need to start building the bitmap and my memory manager.
+### Bitmap allocator
+- Build the bitmap, marked pages not used by either kernel, hardware or multiboot info as free for use
+- Extracted the kernel sections start and end addresses and marked the corresponding pages in the bitmap as used
 ## Need to do
 ### Memory manager
 1. [x] ~~Build the bitmap~~
-2. Mark the bootloader info section and the kernel stuff as used
+2. [x] Mark the bootloader info section and ~~the kernel stuff as used~~
 3. Now, need to start thinking about other functionality like malloc and all of these stuff
 ### organizational work
 Need to start organizing my code more and my build tools
@@ -21,4 +24,3 @@ Need to start organizing my code more and my build tools
 - You must first have a cross-compiler set up to be able to build and run this. Without using a cross-compiler, a lot of unexpected things can happen because the compiler assumes that the code is running on the host operating system.
 - The compiler that I'm using targets a generic architecture (i686-elf)t hat allows you to leave the current operating system behind, meaning that no headers or libraries of the host operating system will be used.
 - Call `make`.
-- 
