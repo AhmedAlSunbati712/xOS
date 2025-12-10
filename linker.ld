@@ -22,30 +22,51 @@ SECTIONS
 	/* First put the multiboot header, as it is required to be put very early
 	   in the image or the bootloader won't recognize the file format.
 	   Next we'll put the .text section. */
+
+	kernel_start_address = .;
 	.text BLOCK(4K) : ALIGN(4K)
 	{
+		kernel_text_start = .;
 		*(.multiboot)
 		*(.text)
+		kernel_text_end = .;
+
 	}
+	
 
 	/* Read-only data. */
+	
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
+		kernel_rodata_start = .;
 		*(.rodata)
+		kernel_rodata_end = .;
 	}
+	
 
 	/* Read-write data (initialized) */
+	
 	.data BLOCK(4K) : ALIGN(4K)
 	{
+		kernel_data_start = .;
 		*(.data)
+		kernel_data_end = .;
+
 	}
+	
 
 	/* Read-write data (uninitialized) and stack */
+	
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
+		kernel_bss_start = .;
 		*(COMMON)
 		*(.bss)
+		kernel_bss_end = .;
+
 	}
+	
+	kernel_end_address = .;
 
 	/* The compiler may produce other sections, by default it will put them in
 	   a segment with the same name. Simply add stuff here as needed. */

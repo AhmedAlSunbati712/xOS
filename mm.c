@@ -1,10 +1,13 @@
 #include "mm.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include "multiboot.h"
+#include "fb.h"
 
 uint8_t bitmap[BITMAP_LENGTH];
+int num_free = 0;
 
-bool initialize_pmm_bitmap(multiboot_info_t* mbd, uint64_t memory_limit) {
+bool initialize_pmm_bitmap(multiboot_info_t* mbd) {
 	/*
 	Setting all the pages to be occupied
 	*/
@@ -17,10 +20,12 @@ bool initialize_pmm_bitmap(multiboot_info_t* mbd, uint64_t memory_limit) {
 		if (mmmt->type == MULTIBOOT_MEMORY_AVAILABLE) {
 			unsigned long long start_addr = mmmt->addr;
 			unsigned long long end_addr = mmmt->addr + mmmt->len;
-			printf("Free memory start address: %lx, end address: %lx, length: %lx\n", start_addr, end_addr, mmmt->len);
+			printf("[!] Free memory start address: %lx, end address: %lx, length: %lx\n", start_addr, end_addr, mmmt->len);
 			// Round up the start address and round down the end addr
+			printf("[!] Aligning the addresses to mark the pages\n");
 			unsigned long long start_aligned = UP_TO_PAGE(start_addr);
 			unsigned long long end_aligned = DOWN_TO_PAGE(end_addr);
+			printf("[!] Aligned start address: %lx, Aligned end address: %lx\n", start_aligned, end_aligned);
 			unsigned long long curr_addr = start_aligned;
 			while (curr_addr < end_aligned) {
 				//printf("Address starting at %lx is Free ", curr_addr);
@@ -31,7 +36,10 @@ bool initialize_pmm_bitmap(multiboot_info_t* mbd, uint64_t memory_limit) {
 				// if this is the first page to be set free in this byte, then this is equivalent to 11111111 & ~(11111101) = 11111101
 				bitmap[byte_idx] &= ~bitmask;
 				curr_addr += PAGESIZE;
+				num_free += 1;
 			}
 		}
 	}
+	printf("[!] Number of free pages: %d.", num_free);
+	return true;
 }

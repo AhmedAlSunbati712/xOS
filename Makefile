@@ -3,7 +3,7 @@ ISO := myos.iso
 OS := myos.bin
 
 # --- SRC files ---
-C_SRCS := kernel.c test_stack.c fb.c spinlock.c
+C_SRCS := kernel.c test_stack.c fb.c spinlock.c mm.c
 AS_SRCS := boot.s kernel_s.s fb_cursor.s
 
 # -- OBJECT files ---

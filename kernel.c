@@ -15,6 +15,17 @@
 #error "This tutorial needs to be compiled with a ix86-elf compiler"
 #endif
 
+extern uint32_t kernel_start_address;
+extern uint32_t kernel_text_start;
+extern uint32_t kernel_text_end;
+extern uint32_t kernel_rodata_start;
+extern uint32_t kernel_rodata_end;
+extern uint32_t kernel_data_start;
+extern uint32_t kernel_data_end;
+extern uint32_t kernel_bss_start;
+extern uint32_t kernel_bss_end;
+extern uint32_t kernel_end_address;
+
 void kernel_main(multiboot_info_t* mbd, unsigned int magic) 
 {	
 	/* Initialize terminal interface */
@@ -28,6 +39,17 @@ void kernel_main(multiboot_info_t* mbd, unsigned int magic)
 		printf("Invalid memory map given by GRUB bootloader\n.");
 		return;
 	}
+	printf("1. kernel start address: %x, value: %x \n", &kernel_start_address, kernel_start_address);
+	printf("2. kernel text start address: %x, value: %x \n", &kernel_text_start, kernel_text_start);
+	printf("3. kernel text end address: %x, value: %x \n", &kernel_text_end, kernel_text_end);
+	printf("4. kernel rodata start address: %x, value: %x \n", &kernel_rodata_start, kernel_rodata_start);
+	printf("5. kernel rodata end address: %x, value: %x \n", &kernel_rodata_end, kernel_rodata_end);
+	printf("6. kernel data start address: %x, value: %x \n", &kernel_data_start, kernel_data_start);
+	printf("7. kernel data end address: %x, value: %x \n", &kernel_data_end, kernel_data_end);
+	printf("8. kernel bss start address: %x, value: %x \n", &kernel_bss_start, kernel_bss_start);
+	printf("9. kernel bss end address: %x, value: %x \n", &kernel_bss_end, kernel_bss_end);
+	printf("10. kernel end address: %x, value: %x \n", &kernel_end_address, kernel_end_address);
+
 
 	/*need to find the limit of the memory. iterate through all of the entries
 	 and calculate end address = start_address + length*/
@@ -40,9 +62,9 @@ void kernel_main(multiboot_info_t* mbd, unsigned int magic)
 			memory_limit = current_limit;
 		}
 	}
-	printf("Memory limit: %lx\n", memory_limit);
+	printf("[+] Memory limit: %lx\n", memory_limit);
 	int num_pages = (int)(memory_limit >> PAGESHIFT);
-	printf("Number of pages: %d.\n", num_pages);
+	printf("[+] Number of pages: %d.\n", num_pages);
 
 	/**
 	Build the bitmap. We are going to have an array of bytes
@@ -51,7 +73,7 @@ void kernel_main(multiboot_info_t* mbd, unsigned int magic)
 	11111111 11111111 11111111
 	*/
 	
-	printf("Number of bytes in bitmap: %d.\n", BITMAP_LENGTH);
-	initialize_pmm_bitmap(mbd, memory_limit);
+	printf("[+] Number of bytes in bitmap: %d.\n", BITMAP_LENGTH);
+	initialize_pmm_bitmap(mbd);
 	
 }
