@@ -40,6 +40,33 @@ bool initialize_pmm_bitmap(multiboot_info_t* mbd) {
 			}
 		}
 	}
-	printf("[!] Number of free pages: %d.", num_free);
+	printf("[!] Number of free pages: %d.\n", num_free);
 	return true;
+}
+
+bool mark_occupied(uint32_t start_address, uint32_t end_address) {
+	uint32_t start_aligned = UP_TO_PAGE(start_address);
+	uint32_t end_aligned = DOWN_TO_PAGE(end_address);
+	for (uint32_t curr_addr = start_aligned; curr_addr < end_aligned; curr_addr += PAGESIZE) {
+		int curr_page_num = (int) (curr_addr >> PAGESHIFT);
+		if (!is_free(curr_page_num)) {
+			printf("[!] page num %d is occupied\n", curr_page_num);
+			// roll back
+			return false;
+		}
+		int byte_idx = curr_page_num / 8;
+		int byte_subidx = curr_page_num % 8;
+		uint8_t bitmask = 1 << byte_subidx;
+		bitmap[byte_idx] = bitmap[byte_idx] | bitmask;
+	}
+	return true;
+}
+
+bool is_free(int page_num) {
+	int byte_idx = page_num / 8;
+	int byte_subidx = page_num % 8;
+	uint8_t bitmask = 1 << byte_subidx;
+	uint8_t bitmasked_byte = bitmap[byte_idx] & bitmask;
+	bitmasked_byte = bitmasked_byte >> byte_subidx;
+	return bitmasked_byte == 0;
 }

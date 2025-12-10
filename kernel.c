@@ -75,5 +75,11 @@ void kernel_main(multiboot_info_t* mbd, unsigned int magic)
 	
 	printf("[+] Number of bytes in bitmap: %d.\n", BITMAP_LENGTH);
 	initialize_pmm_bitmap(mbd);
+	// Marking kernel section stuff as occupied
+	mark_occupied(kernel_text_start, kernel_text_end);
+	mark_occupied(kernel_rodata_start, kernel_rodata_end);
+	mark_occupied(kernel_data_start, kernel_data_end);
+	mark_occupied(kernel_bss_start, kernel_bss_end);
+
 	
 }

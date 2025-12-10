@@ -16,4 +16,6 @@
 extern uint8_t bitmap[BITMAP_LENGTH];
 
 bool initialize_pmm_bitmap(multiboot_info_t* mbd);
+bool mark_occupied(uint32_t start_address, uint32_t end_address);
+bool is_free(int page_num);
 #endif
