@@ -4,6 +4,7 @@
 #include "multiboot.h"
 #include "fb.h"
 #include "mm.h"
+#include "gdt.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -28,6 +29,7 @@ extern uint32_t kernel_end_address;
 
 void kernel_main(multiboot_info_t* mbd, unsigned int magic) 
 {	
+	gdt_init();
 	/* Initialize terminal interface */
 	initialize_terminal();
 

@@ -1,22 +1,27 @@
 #ifndef GDT_H
 #define GDT_H
 
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
 #define NUM_GDT_ENTRIES 5
 
-struct gdt {
-    uint32_t offset;
-    uint16_t size;
-} __attribute__((packed));
 
-struct gdt_entry {
+typedef struct gdt {
+    uint16_t size;
+    uint32_t offset;
+} __attribute__((packed)) gdt;
+
+typedef struct gdt_entry {
     uint16_t limit_low;
     uint16_t base_low;
     uint8_t base_middle;
     uint8_t access;
-    uint8_t granularity; /* limit top 4 bits and then flags*/
+    uint8_t granularity;
     uint8_t base_high;
-}__attribute__((packed));
+} __attribute__((packed)) gdt_entry;
 
 void gdt_init();
-void gdt_load(uint32_t gdt_addr);
+void load_gdt(uint32_t gdt_addr);
 #endif
