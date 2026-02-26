@@ -65,9 +65,9 @@ void terminal_putchar(char c, int fg) {
 
 void move_cursor(uint16_t pos) {
     outb((unsigned short) VGA_CURSOR_DESCRIPTOR_PORT, (unsigned char) POS_HIGH_BYTE_COMMAND);
-    outb((unsigned short) VGA_CURSOR_DATA_PORT, (unsigned char) (pos & 0xFF));
-    outb((unsigned short) VGA_CURSOR_DESCRIPTOR_PORT, (unsigned char) POS_LOW_BYTE_COMMAND);
     outb((unsigned short) VGA_CURSOR_DATA_PORT, (unsigned char) ((pos >> 8) & 0xFF));
+    outb((unsigned short) VGA_CURSOR_DESCRIPTOR_PORT, (unsigned char) POS_LOW_BYTE_COMMAND);
+    outb((unsigned short) VGA_CURSOR_DATA_PORT, (unsigned char) (pos & 0xFF));
 }
 
 void printf(char* restrict format, ...) {

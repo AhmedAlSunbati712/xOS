@@ -3,8 +3,8 @@ ISO := myos.iso
 OS := myos.bin
 
 # --- SRC files ---
-C_SRCS := kernel.c test_stack.c fb.c spinlock.c mm.c gdt.c
-AS_SRCS := boot.s kernel_s.s fb_cursor.s load_gdt.s
+C_SRCS := kernel.c test_stack.c fb.c spinlock.c mm.c gdt.c fb_cursor.c
+AS_SRCS := boot.s kernel_s.s load_gdt.s
 
 # -- OBJECT files ---
 C_OBJS := $(C_SRCS:.c=.o)

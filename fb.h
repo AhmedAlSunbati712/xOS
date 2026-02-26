@@ -9,8 +9,8 @@
 /* Macros for moving cursor*/
 #define VGA_CURSOR_DESCRIPTOR_PORT  0x3D4
 #define VGA_CURSOR_DATA_PORT        0x3D5
-#define POS_HIGH_BYTE_COMMAND       15
-#define POS_LOW_BYTE_COMMAND        14
+#define POS_HIGH_BYTE_COMMAND       14
+#define POS_LOW_BYTE_COMMAND        15
 
 /* Externing important global variables */
 extern uint16_t terminal_bg;
