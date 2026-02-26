@@ -1,4 +1,3 @@
-.intel_syntax noprefix
 /* Declare constants for the multiboot header. */
 .set ALIGN,    1<<0             /* align loaded modules on page boundaries */
 .set MEMINFO,  1<<1             /* provide memory map */
@@ -64,7 +63,7 @@ _start:
 	stack (as it grows downwards on x86 systems). This is necessarily done
 	in assembly as languages such as C cannot function without a stack.
 	*/
-	lea esp, [stack_bottom + KERNEL_STACK_SIZE]
+	leal KERNEL_STACK_SIZE+stack_bottom, %esp
 
 	/*
 	This is a good place to initialize crucial processor state before the
@@ -85,8 +84,8 @@ _start:
 	stack since (pushed 0 bytes so far), so the alignment has thus been
 	preserved and the call is well defined.
 	*/
-	push eax
-	push ebx
+	pushl %eax
+	pushl %ebx
 	call kernel_main
 
 	/*
